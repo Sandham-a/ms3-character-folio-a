@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content%}
+<ul class="collapsible">
+  <h3 class="blue-grey-text text-darken-4 center-align">Character Catalog</h3>
+  {% for character in characters %} 
+    <li>
+      <div class="collapsible-header white-text blue-grey darken-4 ">
+          <div class="col s3">
+            {{ character.character_name }}<br>
+            {{ character.race }} {{ character.class_name }} <a href="{{ url_for('delete_character', character_id=character._id) }}" 
+            class="btn-small red darken-4">Delete</a><br>
+            {{ character.background_name }}<br>
+              <i class="fas fa-caret-down"></i>  
+          </div>
+      </div>
+      <div class="collapsible-body">
+          <strong>Strength</strong> {{ character.character_strength }}<br>
+          <strong>Dexterity</strong> {{ character.character_dexterity }}<br>
+          <strong>Constitution</strong> {{ character.character_constitution }}<br>
+          <strong>Wisdom</strong> {{ character.character_wisdom }}<br>
+          <strong>Intelligence</strong> {{ character.character_intelligence }}<br>
+          <strong>Charisma</strong> {{ character.character_charisma }}
+      </div>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

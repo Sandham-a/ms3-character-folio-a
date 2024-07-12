@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Flask app that allows players to store characters that they have created.">
+    <meta name="keywords" content="Chacracter folio, DnD, Roleplaying">
+    <meta name="author" content="Adam Sandham">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://kit.fontawesome.com/c1c806d69a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    {% block styles %}
+    {% endblock %}
+    <title>Character Folio</title>
+</head>
+<body id="background-image">
+
+    <header>
+    <!--top navbar-->
+    <nav class = "nav-extended text-shadow blue-grey darken-4">
+        <div class="nav-wrapper">
+            <i class="fas fa-dice-d20 site-icon"></i>
+          <a href="{{ url_for('profile', username=session['user']) }}" class="brand-logo">Character Folio</a>
+          <a href="#" data-target="mobile-demo" class="sidenav-trigger right"><i class="fas fa-bars"></i></a>
+          <ul class="right hide-on-med-and-down">
+        {% if session.user %}
+            <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
+            <li><a href="{{ url_for('add_character') }}">New Character</a></li>
+            <li><a href="{{ url_for('get_character') }}">Character Catalogue</a></li>
+            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+        {% else %}
+            <li><a href="{{ url_for('login') }}">Log In</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
+        {% endif %}
+          </ul>
+        </div>
+      </nav>
+    <!-- side navbar-->
+
+        <ul class="sidenav" id="mobile-demo">
+            <li><h4 class = "center-align grey-blue-text text-darken-4">Character Folio</h4></li>
+        {% if session.user %}
+            <li><a href="{{ url_for('profile', username=session['user']) }}">Profile</a></li>
+            <li><a href="{{ url_for('add_character') }}">New Character</a></li>
+            <li><a href="{{ url_for('get_character') }}">Character Catalogue</a></li>
+            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+        {% else %}
+        <li><a href="{{ url_for('login') }}">Log In</a></li>
+        <li><a href="{{ url_for('register') }}">Register</a></li>
+        {% endif %}
+        </ul>    
+    </header>
+       
+    <section>
+        <!-- flash messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="row flashes">
+                        <h4 class="light-blue lighten-4 center-align">{{ message }}</h4>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </section>
+
+    <main class="container">
+    {% block content %}
+    {% endblock%}
+    </main>
+
+    <footer class="page-footer blue-grey darken-4">
+        <div class="container ">
+          <div class="row">
+            <div class="col l6 s12">
+              <h5 class="white-text">Created By: A.Sandham</h5>
+            </div>
+            <div class="col l4 offset-l2 s12 center-align">
+              <ul class="contact-links">
+                <li class="contact">
+                    <a target="_blank" href="https://www.linkedin.com/in/adam-sandham-93109b166/">
+                        <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        <span class="sr-only">LinkedIn</span>
+                    </a>
+                </li>
+                <li class="contact" id="central-icon">
+                    <a target="_blank" href="https://github.com/Sandham-a">
+                        <i class="fa fa-github" aria-hidden="true"></i>
+                        <span class="sr-only">Github</span>
+                    </a>
+                </li>
+                <li class="contact">
+                    <a target="_blank" href="https://twitter.com">
+                        <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+                        <span class="sr-only">Twitter/x</span>
+                    </a>
+                </li>
+                <li class="contact">
+                    <a href="{{ url_for('contact') }}">
+                        <i class="fa-solid fa-envelope"  aria-hidden="true"></i>
+                        <span class="sr-only">Contact us</span>
+                    </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Ruthie&display=swap');
+.ruthie-regular {
+    font-family: "Ruthie", cursive;
+    font-weight: 400;
+    font-style: normal;
+ }
+  
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.site-icon{
+  padding-left: 30px;
+  padding-right: 5px;
+}
+
+.brand-logo{
+    font-family: "Ruthie", cursive;
+    margin-left: 10px;
+    margin-top: 2px;
+}
+
+#background-image{
+    background: url("../images/background_image.jpg") no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    backdrop-filter: contrast(15%);
+
+}
+
+.contact-list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.contact-links li{
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.contact i{
+    align-items: center;
+    color: #fefefe;
+}
+
+.contact i:hover {
+    color: #47555e;
+    transition: all 0.35s ease-in-out;
+  }
+
+.card-panel{
+  background-color: #fdfdfd;
+  margin-top: 20px;
+}
+
+.collapsible-body{
+  background-color: #fdfdfd;
+}
+
+  main {
+    flex: 1 0 auto;
+  }
