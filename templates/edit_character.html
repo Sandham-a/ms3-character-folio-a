@@ -20,10 +20,10 @@
                      <select id="race" name="race" class="validate" required>
                          <option value="" disabled selected>{{ character.race }}</option>
                          {% for race in races %}
-                             {% if character.race == race.race %}
+                             {% if race.race == character.race %}
                                  <option value="{{ race.race }}" selected>{{ race.race }}</option>
                              {% else %}
-                                 <option value="{{ race }}">{{ race.race }}</option>
+                                 <option value="{{ race.race }}">{{ race.race }}</option>
                              {% endif %}
                          {% endfor %}
                      </select>
@@ -53,7 +53,7 @@
                             {% if background.background_name == character.background_name %}
                                 <option value="{{ background.background_name }}" selected>{{ character.background_name }}</option>
                             {% else %}
-                                <option value="{{ background }}">{{ background.background_name }}</option>
+                                <option value="{{ background.background_name }}">{{ background.background_name }}</option>
                             {% endif %}
                         {% endfor %}
                     </select>
