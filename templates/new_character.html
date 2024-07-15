@@ -96,7 +96,10 @@
                     <button type="submit" class="btn-large blue-grey darken-4">
                         Create Character<i class="fas fa-plus-square right"></i>
                     </button>
+                    <a href="{{ url_for('profile', username=session['user']) }}" class="btn-large red">
+                        Cancel <i class="fas fa-times-circle right"></i></a>
                 </div>
+                
             </div>
         </form>
     </div>
