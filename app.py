@@ -1,11 +1,10 @@
 import os
-from flask import (
-    Flask, flash, render_template, 
-    redirect, request, session, url_for)
+from flask import (Flask, flash, render_template,
+                   redirect, request, session, url_for)
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from markupsafe import escape
-from werkzeug.security import generate_password_hash, check_password_hash 
+from werkzeug.security import generate_password_hash, check_password_hash
 if os.path.exists("env.py"):
     import env
 
@@ -20,44 +19,44 @@ mongo = PyMongo(app)
 
 
 @app.route("/")
-@app.route("/login", methods=["GET","POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         existing_user = mongo.db.users.find_one(
-            {"username": request.form.get("username").lower()})        
+            {"username": request.form.get("username").lower()})
         if existing_user:
             # ensure hashed password matches user input
-            if check_password_hash(
-                existing_user["password"], request.form.get("password")):
-                        session["user"] = request.form.get("username").lower()
-                        flash("Welcome, {}".format(
-                            request.form.get("username")))
-                        return redirect(url_for(
-                            "profile", username=session["user"]))
+            if check_password_hash(existing_user["password"],
+                                   request.form.get("password")):
+                session["user"] = request.form.get("username").lower()
+                flash("Welcome, {}".format(
+                                        request.form.get("username")))
+                return redirect(url_for(
+                                    "profile",  username=session["user"]))
             else:
                 # invalid password match
                 flash("Incorrect Username and/or Password")
                 return redirect(url_for("login"))
-        else: 
+        else:
             flash("Incorrect Username or Password")
             return redirect(url_for("login"))
     return render_template("login.html")
 
-#get to the users profile page
+
+# get to the users profile page
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
     # grab the session user's username from db
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
-    
     if session["user"]:
         characters = list(mongo.db.character.find())
-        return render_template("profile.html", username=username, characters=characters)
-    
+        return render_template("profile.html",
+                               username=username, characters=characters)
     return redirect(url_for("login"))
 
 
-@app.route("/register", methods=["Get","POST"])
+@app.route("/register", methods=["Get", "POST"])
 def register():
     if request.method == "POST":
         # check if username already exists in db
@@ -67,27 +66,24 @@ def register():
         if existing_user:
             flash("Username already exists")
             return redirect(url_for("register"))
-        
-        # check the passwords match 
-        
+
+        # check the passwords match
         password1 = request.form.get("password")
         password2 = request.form.get("password2")
-        
         if password1 != password2:
             flash("Please make sure your passwords match")
             return redirect(url_for("register"))
-        
-        hashed_password = generate_password_hash("password", method='pbkdf2:sha256')
-        
-        # if the username is unique and the passwords match then register the account
-        # in the db
-        
+        hashed_password = generate_password_hash("password",
+                                                 method='pbkdf2:sha256')
+
+        # if the username is unique and the passwords match then
+        # register the account in the db
         register = {
             "first_name": request.form.get("first-name"),
             "last_name": request.form.get("last-name"),
             "username": request.form.get("username").lower(),
             "password": hashed_password,
-            "email_address" : request.form.get("email").lower()
+            "email_address": request.form.get("email").lower()
         }
         mongo.db.users.insert_one(register)
 
@@ -95,15 +91,15 @@ def register():
         session["user"] = request.form.get("username").lower()
         flash("Registration Successful!")
         return redirect(url_for("profile", username=session["user"]))
-    
     return render_template("register.html")
 
-#logging into account
 
+# logging into account
 @app.route("/get_character")
 def get_character():
     characters = mongo.db.character.find()
     return render_template("characters.html", characters=characters)
+
 
 @app.route("/logout")
 def logout():
@@ -112,7 +108,8 @@ def logout():
     session.pop("user")
     return redirect(url_for("login"))
 
-@app.route("/new_character", methods=["GET","POST"])
+
+@app.route("/new_character", methods=["GET", "POST"])
 def add_character():
     if request.method == "POST":
         character = {
@@ -122,20 +119,25 @@ def add_character():
             "background_name": request.form.get("background_name"),
             "character_strength": request.form.get("character_strength"),
             "character_dexterity": request.form.get("character_dexterity"),
-            "character_constitution": request.form.get("character_constitution"),
-            "character_intelligence": request.form.get("character_intelligence"),
+            "character_constitution": request.form.get(
+                                                    "character_constitution"),
+            "character_intelligence": request.form.get(
+                                                    "character_intelligence"),
             "character_wisdom": request.form.get("character_wisdom"),
             "character_charisma": request.form.get("character_charisma"),
             "created_by": session["user"]
         }
         mongo.db.character.insert_one(character)
         flash("Character Created")
-        return redirect(url_for("new_character"))
-    
+        return redirect(url_for("add_character"))
+
     races = mongo.db.race.find().sort("race", 1)
     backgrounds = mongo.db.background.find().sort("background_name", 1)
     character_classes = mongo.db.character_class.find().sort("class_name", 1)
-    return render_template("new_character.html", races=races, character_classes=character_classes, backgrounds=backgrounds)
+    return render_template("new_character.html", races=races,
+                           character_classes=character_classes,
+                           backgrounds=backgrounds)
+
 
 @app.route("/edit_character/<character_id>", methods=["GET", "POST"])
 def edit_character(character_id):
@@ -178,8 +180,11 @@ def edit_character(character_id):
     races = mongo.db.race.find().sort("race", 1)
     backgrounds = mongo.db.background.find().sort("background_name", 1)
     character_classes = mongo.db.character_class.find().sort("class_name", 1)
-    return render_template("edit_character.html", races=races, character= character,
-                            character_classes = character_classes, backgrounds=backgrounds)
+    return render_template("edit_character.html", races=races,
+                           character=character,
+                           character_classes=character_classes,
+                           backgrounds=backgrounds)
+
 
 @app.route("/delete_character/<character_id>")
 def delete_character(character_id):
@@ -191,6 +196,7 @@ def delete_character(character_id):
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
+
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
