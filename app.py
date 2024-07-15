@@ -77,6 +77,8 @@ def register():
             flash("Please make sure your passwords match")
             return redirect(url_for("register"))
         
+        hashed_password = generate_password_hash("password", method='pbkdf2:sha256')
+        
         # if the username is unique and the passwords match then register the account
         # in the db
         
@@ -84,7 +86,7 @@ def register():
             "first_name": request.form.get("first-name"),
             "last_name": request.form.get("last-name"),
             "username": request.form.get("username").lower(),
-            "password": generate_password_hash(request.form.get("password")),
+            "password": hashed_password,
             "email_address" : request.form.get("email").lower()
         }
         mongo.db.users.insert_one(register)

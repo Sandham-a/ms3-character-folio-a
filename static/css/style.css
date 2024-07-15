@@ -90,3 +90,11 @@ body {
   .sidenav {
     height: 100% !important;
   }
+
+  @media (max-width: 992px){
+
+    .author-name{
+        text-align: center;
+        margin-top: 5px;
+    }
+  }
