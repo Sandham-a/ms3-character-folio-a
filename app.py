@@ -30,7 +30,7 @@ def login():
                                    request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
                 flash("Welcome, {}".format(
-                                        request.form.get("username")))
+                                        request.form.get("first_name")))
                 return redirect(url_for(
                                     "profile",  username=session["user"]))
             else:
