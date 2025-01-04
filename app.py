@@ -129,7 +129,7 @@ def add_character():
         }
         mongo.db.character.insert_one(character)
         flash("Character Created")
-        return redirect(url_for("add_character"))
+        return redirect(url_for("new_character"))
 
     races = mongo.db.race.find().sort("race", 1)
     backgrounds = mongo.db.background.find().sort("background_name", 1)
@@ -191,12 +191,6 @@ def delete_character(character_id):
     mongo.db.character.delete_one({"_id": ObjectId(character_id)})
     flash("Character Successfully Deleted")
     return redirect(url_for('profile', username=session['user']))
-
-
-@app.route("/contact")
-def contact():
-    return render_template("contact.html")
-
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
